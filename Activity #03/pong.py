@@ -33,8 +33,8 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 1
-ball.dy = 1
+ball.dx = 0.15
+ball.dy = 0.15
 
 # score
 score_1 = 0
@@ -108,7 +108,7 @@ while True:
         ball.dy *= -1
 
     # collision with lower wall
-    if ball.ycor() < -290:
+    elif ball.ycor() < -290:
         os.system("afplay bounce.wav&")
         ball.sety(-290)
         ball.dy *= -1
@@ -118,25 +118,27 @@ while True:
         score_2 += 1
         hud.clear()
         hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        os.system("afplay 258020__kodack__arcade-bleep-sound.wav&")
+        os.system("afplay 258020_kodack_arcade-bleep-sound.wav&")
         ball.goto(0, 0)
         ball.dx *= -1
 
     # collision with right wall
-    if ball.xcor() > 390:
+    elif ball.xcor() > 390:
         score_1 += 1
         hud.clear()
         hud.write("{} : {}".format(score_1, score_2), align="center", font=("Press Start 2P", 24, "normal"))
-        os.system("afplay 258020__kodack__arcade-bleep-sound.wav&")
+        os.system("afplay 258020_kodack_arcade-bleep-sound.wav&")
         ball.goto(0, 0)
         ball.dx *= -1
 
     # collision with the paddle 1
-    if ball.xcor() < -330 and paddle_1.ycor() + 50 > ball.ycor() > paddle_1.ycor() - 50:
+    if ball.xcor() < -340 and paddle_1.ycor() + 60 > ball.ycor() > paddle_1.ycor() - 60:
+        ball.setx(-340)
         ball.dx *= -1
         os.system("afplay bounce.wav&")
 
     # collision with the paddle 2
-    if ball.xcor() > 330 and paddle_2.ycor() + 50 > ball.ycor() > paddle_2.ycor() - 50:
+    if ball.xcor() > 340 and paddle_2.ycor() + 60 > ball.ycor() > paddle_2.ycor() - 60:
+        ball.setx(340)
         ball.dx *= -1
         os.system("afplay bounce.wav&")
