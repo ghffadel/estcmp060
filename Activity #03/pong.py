@@ -32,12 +32,12 @@ class Paddle:
     def check_collision(self):
         if abs(self.x_position) - 10 < abs(ball.xcor()) \
                 < abs(self.x_position) + 10 and \
-                self.paddle.ycor() - 60 < ball.ycor()\
-                < self.paddle.ycor() + 60:
+                self.paddle.ycor() - 40 < ball.ycor()\
+                < self.paddle.ycor() + 40:
             ball.setx(self.x_position + (10 if self.x_position < 0 else -10))
 
-            if self.paddle.ycor() - 30 <= ball.ycor() \
-                    <= self.paddle.ycor() + 30:
+            if self.paddle.ycor() - 20 <= ball.ycor() \
+                    <= self.paddle.ycor() + 20:
                 ball.dx *= -1
 
             else:
