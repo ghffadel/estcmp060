@@ -27,7 +27,8 @@ class Paddle:
     def down(self):
         y = max(self.paddle.ycor() - 30, -250)
         self.paddle.sety(y)
-
+    
+    # check collision between the ball and the paddle
     def check_collision(self):
         if abs(self.x_position) - 10 < abs(ball.xcor()) < abs(self.x_position) + 10 and \
                 self.paddle.ycor() - 60 < ball.ycor() < self.paddle.ycor() + 60:
@@ -41,7 +42,7 @@ class Paddle:
 
             playsound("bounce.wav")
 
-
+# default values for head-up display
 def draw_head_display():
     hud.speed(0)
     hud.shape("square")
@@ -119,7 +120,8 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
         ball.speed(5)
-
+    
+    # check collision in the 2 balls
     paddle_1.check_collision()
     paddle_2.check_collision()
     
