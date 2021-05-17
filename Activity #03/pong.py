@@ -1,5 +1,5 @@
-from playsound import playsound
 import turtle
+import winsound
 
 
 class Paddle:
@@ -27,20 +27,24 @@ class Paddle:
     def down(self):
         y = max(self.paddle.ycor() - 30, -250)
         self.paddle.sety(y)
-    
+
     # check collision between the ball and the paddle
     def check_collision(self):
-        if abs(self.x_position) - 10 < abs(ball.xcor()) < abs(self.x_position) + 10 and \
-                self.paddle.ycor() - 60 < ball.ycor() < self.paddle.ycor() + 60:
+        if abs(self.x_position) - 10 < abs(ball.xcor()) \
+                < abs(self.x_position) + 10 and \
+                self.paddle.ycor() - 60 < ball.ycor()\
+                < self.paddle.ycor() + 60:
             ball.setx(self.x_position + (10 if self.x_position < 0 else -10))
 
-            if self.paddle.ycor() - 30 <= ball.ycor() <= self.paddle.ycor() + 30:
+            if self.paddle.ycor() - 30 <= ball.ycor() \
+                    <= self.paddle.ycor() + 30:
                 ball.dx *= -1
 
             else:
                 ball.dx *= -0.5
 
-            playsound("bounce.wav")
+            winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+
 
 # default values for head-up display
 def draw_head_display():
@@ -104,7 +108,7 @@ while True:
 
         ball.dy *= -1
         ball.speed(5)
-        playsound("bounce.wav")
+        winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 
     # collision with left wall or right wall
     if abs(ball.xcor()) > 390:
@@ -115,16 +119,18 @@ while True:
             paddle_2.score += 1
 
         hud.clear()
-        hud.write("%d : %d" % (paddle_1.score, paddle_2.score), align="center", font=("Press Start 2P", 24, "normal"))
-        playsound("258020__kodack__arcade-bleep-sound.wav")
+        hud.write("%d : %d" % (paddle_1.score, paddle_2.score),
+                  align="center", font=("Press Start 2P", 24, "normal"))
+        winsound.PlaySound("258020__kodack__arcade-bleep-sound.wav",
+                           winsound.SND_ASYNC)
         ball.goto(0, 0)
         ball.dx *= -1
         ball.speed(5)
-    
+
     # check collision in the 2 balls
     paddle_1.check_collision()
     paddle_2.check_collision()
-    
+
     # ends the game if a player reach 10 points
     if paddle_1.score == 10 or paddle_2.score == 10:
         screen.reset()
@@ -133,13 +139,16 @@ while True:
         hud.goto(0, 50)
 
         if paddle_1.score == 10:
-            hud.write("PLAYER 1 WINS!", align="center", font=("Press Start 2P", 24, "normal"))
+            hud.write("PLAYER 1 WINS!", align="center",
+                      font=("Press Start 2P", 24, "normal"))
 
         else:
-            hud.write("PLAYER 2 WINS!", align="center", font=("Press Start 2P", 24, "normal"))
+            hud.write("PLAYER 2 WINS!", align="center",
+                      font=("Press Start 2P", 24, "normal"))
 
         hud.goto(0, 10)
-        hud.write("\nPress Enter to leave the game", align="center", font=("Press Start 2P", 24, "normal"))
+        hud.write("\nPress Enter to leave the game", align="center",
+                  font=("Press Start 2P", 24, "normal"))
 
         screen.onkeypress(screen.bye, "Return")
         screen.listen()
