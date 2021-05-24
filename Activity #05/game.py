@@ -18,11 +18,9 @@ ORANGE = (255, 100, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
-
 size = (800, 600)
 screen = pygame.display.set_mode(size)
 font = pygame.font.Font("assets/PressStart2P.ttf", 24)
-
 pause = False
 
 
@@ -35,19 +33,15 @@ def main_menu():
     menu_button_play = pygame.Rect(size[0] / 2 - 165, size[1] / 2 - 40, 300, 50)
     menu_button_credits = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 20, 300, 50)
     menu_button_quit = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 80, 300, 50)
-
     while True:
         screen.blit(background_menu, (-100, 0))
-
         txt_screen_play = font.render("PLAY", True, BLACK)
         txt_screen_credits = font.render("CREDITS", True, BLACK)
         txt_screen_quit = font.render("QUIT", True, BLACK)
         pygame.draw.rect(screen, RED, menu_button_play)
         pygame.draw.rect(screen, RED, menu_button_credits)
         pygame.draw.rect(screen, RED, menu_button_quit)
-
         mouse_x, mouse_y = pygame.mouse.get_pos()
-
         if click:
             if menu_button_play.collidepoint(mouse_x, mouse_y):
                 game()
@@ -56,17 +50,14 @@ def main_menu():
             if menu_button_quit.collidepoint(mouse_x, mouse_y):
                 pygame.quit()
                 sys.exit()
-
         screen.blit(txt_screen_play, (340, 275))
         screen.blit(txt_screen_credits, (310, 335))
         screen.blit(txt_screen_quit, (340, 395))
         pygame.display.update()
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -86,19 +77,15 @@ def game_pause():
     menu_button_resume = pygame.Rect(size[0] / 2 - 165, size[1] / 2 - 40, 300, 50)
     menu_button_restart = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 20, 300, 50)
     menu_button_menu = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 80, 300, 50)
-
     while pause:
         screen.blit(background_game_pause, (-100, 0))
-
         txt_screen_resume = font.render("RESUME", True, BLACK)
         txt_screen_restart = font.render("RESTART", True, BLACK)
         txt_screen_menu = font.render("MENU", True, BLACK)
         pygame.draw.rect(screen, RED, menu_button_resume)
         pygame.draw.rect(screen, RED, menu_button_restart)
         pygame.draw.rect(screen, RED, menu_button_menu)
-
         mouse_x, mouse_y = pygame.mouse.get_pos()
-
         if click:
             if menu_button_resume.collidepoint(mouse_x, mouse_y):
                 unpause()
@@ -106,17 +93,14 @@ def game_pause():
                 game()
             if menu_button_menu.collidepoint(mouse_x, mouse_y):
                 main_menu()
-
         screen.blit(txt_screen_resume, (320, 275))
         screen.blit(txt_screen_restart, (310, 335))
         screen.blit(txt_screen_menu, (340, 395))
         pygame.display.update()
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -129,21 +113,15 @@ def credits_game():
     background_credits = pygame.transform.scale(background_credits, (900, 600))
     pygame.display.set_caption("CREDITS")
     click = False
-
     while True:
         screen.blit(background_credits, (-10, 0))
-
         pygame.draw.rect(screen, RED, button_menu)
         txt_screen_back = font.render("MENU", True, BLACK)
-
         screen.blit(txt_screen_back, (size[0] / 2 - 325, size[1] / 2 - 260))
-
         mouse_x, mouse_y = pygame.mouse.get_pos()
-
         if click:
             if button_menu.collidepoint(mouse_x, mouse_y):
                 main_menu()
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -159,23 +137,17 @@ def credits_game():
 
 def game():
     global pause
-
     # sound effects
     bounce_sound_effect = pygame.mixer.Sound("assets/bounce.wav")
     scoring_sound_effect = pygame.mixer.Sound("assets/bleep.wav")
-
     score = 0
     lives = 3
-
     pygame.display.set_caption("BREAKOUT")
-
     bricks_list = pygame.sprite.Group()
     sprites_list = pygame.sprite.Group()
-
     paddle = Paddle(LIGHT_BLUE, 100, 10)
     paddle.rect.x = 350
     paddle.rect.y = 560
-
     ball = Ball(WHITE, 10, 10)
     ball.rect.x = 345
     ball.rect.y = 240
@@ -188,34 +160,28 @@ def game():
         brick.rect.y = 80
         sprites_list.add(brick)
         bricks_list.add(brick)
-
     for i in range(7):
         brick = Brick(ORANGE, 80, 30)
         brick.rect.x = 100 * i + 60
         brick.rect.y = 120
         sprites_list.add(brick)
         bricks_list.add(brick)
-
     for i in range(7):
         brick = Brick(YELLOW, 80, 30)
         brick.rect.x = 100 * i + 60
         brick.rect.y = 160
         sprites_list.add(brick)
         bricks_list.add(brick)
-
     for i in range(7):
         brick = Brick(GREEN, 80, 30)
         brick.rect.x = 100 * i + 60
         brick.rect.y = 200
         sprites_list.add(brick)
         bricks_list.add(brick)
-
     sprites_list.add(ball)
     sprites_list.add(paddle)
-
     game_clock = pygame.time.Clock()
     game_loop = True
-
     while game_loop:
         for event in pygame.event.get():
             if event.type == KEYDOWN:
@@ -230,7 +196,7 @@ def game():
                 sys.exit()
 
         keys = pygame.key.get_pressed()
-        
+
         # Paddle movement
         if keys[pygame.K_LEFT]:
             paddle.move_left(5)
@@ -257,7 +223,6 @@ def game():
                 ball.rect.y = 240
                 ball.velocity = [3, 3]
 
-
                 # Displaying Game Over for 3 seconds
                 if lives == 0:
                     fonts = pygame.font.Font("assets/PressStart2P.ttf", 64)
@@ -282,7 +247,6 @@ def game():
         for brick in collision_list:
             ball.collision()
             brick.kill()
-            scoring_sound_effect.play()
             score += 1
             scoring_sound_effect.play()
 
@@ -299,18 +263,15 @@ def game():
 
         screen.fill(DARK_BLUE)
         pygame.draw.line(screen, WHITE, (0, 58), (800, 58), 2)
-
         font = pygame.font.Font("assets/PressStart2P.ttf", 24)
         score_text = font.render("Score: %d" % score, 1, WHITE)
         screen.blit(score_text, (20, 15))
         lives_text = font.render("Lives: %d" % lives, 1, WHITE)
         screen.blit(lives_text, (575, 15))
-
         sprites_list.draw(screen)
-
         pygame.display.flip()
-
         game_clock.tick(60)
+
 
 main_menu()
 pygame.display.update()
