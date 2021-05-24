@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+# Importing the components
 from ball import Ball
 from brick import Brick
 from paddle import Paddle
@@ -8,6 +9,7 @@ from pygame.locals import *
 
 pygame.init()
 
+# Defining colors
 BLACK = (0, 0, 0)
 DARK_BLUE = (36, 90, 190)
 GREEN = (0, 127, 0)
@@ -180,6 +182,7 @@ def game():
     ball.rect.y = 240
     ball.velocity = [3, 3]
 
+    # Adding the bricks with different colors
     for i in range(7):
         brick = Brick(RED, 80, 30)
         brick.rect.x = 100 * i + 60
@@ -217,6 +220,7 @@ def game():
     while game_loop:
         for event in pygame.event.get():
             if event.type == KEYDOWN:
+                # Handling ESC Button
                 if event.key == K_ESCAPE:
                     pause = True
                     game_pause()
@@ -227,7 +231,8 @@ def game():
                 sys.exit()
 
         keys = pygame.key.get_pressed()
-
+        
+        # Paddle movement
         if keys[pygame.K_LEFT]:
             paddle.move_left(5)
 
@@ -236,15 +241,21 @@ def game():
 
         sprites_list.update()
 
+        # Left / right wall collision
         if ball.rect.x <= 0 or ball.rect.x >= 790:
             ball.velocity[0] *= -1
+            bounce_sound_effect.play()
 
+        # Top / bottom wall collision
         if ball.rect.y < 65 or ball.rect.y > 590:
             ball.velocity[1] *= -1
+            bounce_sound_effect.play()
 
+            # Decreasing lives if collides with bottom wall
             if ball.rect.y > 590:
                 lives -= 1
 
+                # Displaying Game Over for 3 seconds
                 if lives == 0:
                     fonts = pygame.font.Font("assets/PressStart2P.ttf", 64)
                     text = font.render("GAME OVER", 1, WHITE)
@@ -253,19 +264,25 @@ def game():
                     pygame.time.wait(3000)
 
                     game_loop = False
+                    main_menu()
 
+        # Collision with paddle
         if pygame.sprite.collide_mask(ball, paddle):
             ball.rect.x -= ball.velocity[0]
             ball.rect.y -= ball.velocity[1]
             ball.collision()
+            bounce_sound_effect.play()
 
         collision_list = pygame.sprite.spritecollide(ball, bricks_list, False)
 
+        # Collision with bricks
         for brick in collision_list:
             ball.collision()
             brick.kill()
             score += 1
+            scoring_sound_effect.play()
 
+            # Displaying Level Completed for 3 seconds
             if len(bricks_list) == 0:
                 fonts = pygame.font.Font("assets/PressStart2P.ttf", 64)
                 text = font.render("LEVEL COMPLETED", 1, WHITE)
@@ -274,6 +291,7 @@ def game():
                 pygame.time.wait(3000)
 
                 game_loop = False
+                main_menu()
 
         screen.fill(DARK_BLUE)
         pygame.draw.line(screen, WHITE, (0, 58), (800, 58), 2)
