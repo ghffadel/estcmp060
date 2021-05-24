@@ -158,7 +158,6 @@ def credits_game():
 
 
 def game():
-
     global pause
 
     # sound effects
@@ -224,7 +223,7 @@ def game():
                 if event.key == K_ESCAPE:
                     pause = True
                     game_pause()
-            
+
             if event.type == pygame.QUIT:
                 game_loop = False
                 pygame.quit()
@@ -254,6 +253,10 @@ def game():
             # Decreasing lives if collides with bottom wall
             if ball.rect.y > 590:
                 lives -= 1
+                ball.rect.x = 345
+                ball.rect.y = 240
+                ball.velocity = [3, 3]
+
 
                 # Displaying Game Over for 3 seconds
                 if lives == 0:
@@ -279,6 +282,7 @@ def game():
         for brick in collision_list:
             ball.collision()
             brick.kill()
+            scoring_sound_effect.play()
             score += 1
             scoring_sound_effect.play()
 
