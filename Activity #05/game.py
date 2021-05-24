@@ -209,6 +209,8 @@ def game():
         # Left / right wall collision
         if ball.rect.x <= 0 or ball.rect.x >= 790:
             ball.velocity[0] *= -1
+            if ball.velocity[1] == 0:
+                ball.velocity[1] = -4
             bounce_sound_effect.play()
 
         # Top / bottom wall collision
