@@ -4,6 +4,7 @@ BLACK = (0, 0, 0)
 
 class Brick(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
+        # Initializing Sprite attributes
         super().__init__()
 
         self.image = pygame.Surface((width, height))
