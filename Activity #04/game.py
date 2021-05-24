@@ -325,7 +325,10 @@ def game():
                 rect_player_1.y = 570
 
             # player 2 "Artificial Intelligence"
-            rect_player_2.y = rect_ball.y
+            if rect_player_2.top < rect_ball.y:
+                rect_player_2.top += 2
+            if rect_player_2.bottom > rect_ball.y and rect_player_2.top > rect_ball.y:
+                rect_player_2.bottom -= 2
             if rect_player_2.y <= 0:
                 rect_player_2.y = 0
             elif rect_player_2.y >= 570:
