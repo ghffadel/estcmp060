@@ -1,20 +1,25 @@
 import pygame
-
 import sys
 
+from ball import Ball
+from brick import Brick
+from paddle import Paddle
 from pygame.locals import *
 
 pygame.init()
 
-COLOR_BLACK = (0, 0, 0)
-COLOR_WHITE = (255, 255, 255)
-COLOR_RED = (189, 16, 0)
+BLACK = (0, 0, 0)
+DARK_BLUE = (36, 90, 190)
+GREEN = (0, 127, 0)
+LIGHT_BLUE = (0, 176, 240)
+ORANGE = (255, 100, 0)
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
 
-SCORE_MAX = 2
-
-size = (1280, 720)
+size = (800, 600)
 screen = pygame.display.set_mode(size)
-font = pygame.font.SysFont("pressstart2pregular", 40, False, False)
+font = pygame.font.Font("assets/PressStart2P.ttf", 24)
 
 pause = False
 
@@ -23,20 +28,21 @@ pause = False
 def main_menu():
     pygame.display.set_caption("MENU")
     background_menu = pygame.image.load("assets/main_menu_breakout.jpg")
+    background_menu = pygame.transform.scale(background_menu, (1000, 600))
     click = False
     menu_button_play = pygame.Rect(size[0] / 2 - 165, size[1] / 2 - 40, 300, 50)
     menu_button_credits = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 20, 300, 50)
     menu_button_quit = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 80, 300, 50)
 
     while True:
-        screen.blit(background_menu, (0, 0))
+        screen.blit(background_menu, (-100, 0))
 
-        txt_screen_play = font.render("PLAY", True, COLOR_BLACK)
-        txt_screen_credits = font.render("CREDITS", True, COLOR_BLACK)
-        txt_screen_quit = font.render("QUIT", True, COLOR_BLACK)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_play)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_credits)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_quit)
+        txt_screen_play = font.render("PLAY", True, BLACK)
+        txt_screen_credits = font.render("CREDITS", True, BLACK)
+        txt_screen_quit = font.render("QUIT", True, BLACK)
+        pygame.draw.rect(screen, RED, menu_button_play)
+        pygame.draw.rect(screen, RED, menu_button_credits)
+        pygame.draw.rect(screen, RED, menu_button_quit)
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -49,9 +55,9 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
 
-        screen.blit(txt_screen_play, (550, 328))
-        screen.blit(txt_screen_credits, (486, 388))
-        screen.blit(txt_screen_quit, (550, 448))
+        screen.blit(txt_screen_play, (340, 275))
+        screen.blit(txt_screen_credits, (310, 335))
+        screen.blit(txt_screen_quit, (340, 395))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -73,20 +79,21 @@ def unpause():
 # creating a pause menu
 def game_pause():
     background_game_pause = pygame.image.load("assets/game_pause_breakout.jpg")
+    background_game_pause = pygame.transform.scale(background_game_pause, (1000, 600))
     click = False
     menu_button_resume = pygame.Rect(size[0] / 2 - 165, size[1] / 2 - 40, 300, 50)
     menu_button_restart = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 20, 300, 50)
     menu_button_menu = pygame.Rect(size[0] / 2 - 165, size[1] / 2 + 80, 300, 50)
 
     while pause:
-        screen.blit(background_game_pause, (0, 0))
+        screen.blit(background_game_pause, (-100, 0))
 
-        txt_screen_resume = font.render("RESUME", True, COLOR_BLACK)
-        txt_screen_restart = font.render("RESTART", True, COLOR_BLACK)
-        txt_screen_menu = font.render("MENU", True, COLOR_BLACK)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_resume)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_restart)
-        pygame.draw.rect(screen, COLOR_RED, menu_button_menu)
+        txt_screen_resume = font.render("RESUME", True, BLACK)
+        txt_screen_restart = font.render("RESTART", True, BLACK)
+        txt_screen_menu = font.render("MENU", True, BLACK)
+        pygame.draw.rect(screen, RED, menu_button_resume)
+        pygame.draw.rect(screen, RED, menu_button_restart)
+        pygame.draw.rect(screen, RED, menu_button_menu)
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -98,9 +105,9 @@ def game_pause():
             if menu_button_menu.collidepoint(mouse_x, mouse_y):
                 main_menu()
 
-        screen.blit(txt_screen_resume, (508, 328))
-        screen.blit(txt_screen_restart, (490, 388))
-        screen.blit(txt_screen_menu, (548, 448))
+        screen.blit(txt_screen_resume, (320, 275))
+        screen.blit(txt_screen_restart, (310, 335))
+        screen.blit(txt_screen_menu, (340, 395))
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -115,18 +122,19 @@ def game_pause():
 
 # creating the credits
 def credits_game():
-    button_menu = pygame.Rect(size[0] / 2 - 630, size[1] / 2 - 350, 230, 50)
+    button_menu = pygame.Rect(size[0] / 2 - 350, size[1] / 2 - 275, 150, 50)
     background_credits = pygame.image.load("assets/credits_breakout.jpg")
+    background_credits = pygame.transform.scale(background_credits, (900, 600))
     pygame.display.set_caption("CREDITS")
     click = False
 
     while True:
-        screen.blit(background_credits, (0, 0))
+        screen.blit(background_credits, (-10, 0))
 
-        pygame.draw.rect(screen, COLOR_RED, button_menu)
-        txt_screen_back = font.render("MENU", True, COLOR_BLACK)
+        pygame.draw.rect(screen, RED, button_menu)
+        txt_screen_back = font.render("MENU", True, BLACK)
 
-        screen.blit(txt_screen_back, (size[0] / 2 - 593, size[1] / 2 - 343))
+        screen.blit(txt_screen_back, (size[0] / 2 - 325, size[1] / 2 - 260))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -151,164 +159,136 @@ def game():
 
     global pause
 
-    pygame.display.set_caption("BREAKOUT")
-
-    # score text
-    score_font = pygame.font.Font("assets/PressStart2P.ttf", 44)
-    score_text = score_font.render("00", True, COLOR_WHITE, COLOR_BLACK)
-    score_text_rect = score_text.get_rect()
-    score_text_rect.center = (680, 50)
-
-    # victory text
-    victory_font = pygame.font.Font("assets/PressStart2P.ttf", 100)
-    victory_text = victory_font .render("VICTORY", True, COLOR_WHITE, COLOR_BLACK)
-    victory_text_rect = score_text.get_rect()
-    victory_text_rect.center = (450, 350)
-
     # sound effects
     bounce_sound_effect = pygame.mixer.Sound("assets/bounce.wav")
     scoring_sound_effect = pygame.mixer.Sound("assets/bleep.wav")
 
-    # player 1
-    player_1 = pygame.image.load("assets/player.png")
-    player_1 = pygame.transform.rotate(player_1, 90)
-    rect_player_1 = player_1.get_rect()
-    player_1_y = 500
-    rect_player_1 = rect_player_1.move(50, player_1_y)
-    player_1_move_up = False
-    player_1_move_down = False
-
-    # ball
-    ball = pygame.image.load("assets/ball.png")
-    rect_ball_ = ball.get_rect()
-    ball_x = 0
-    ball_y = 0
-    rect_ball = rect_ball_.move(ball_x, ball_y)
-    ball_dx = 5
-    ball_dy = 5
-
-    # score
     score = 0
+    lives = 3
 
-    # game loop
-    game_loop = True
+    pygame.display.set_caption("BREAKOUT")
+
+    bricks_list = pygame.sprite.Group()
+    sprites_list = pygame.sprite.Group()
+
+    paddle = Paddle(LIGHT_BLUE, 100, 10)
+    paddle.rect.x = 350
+    paddle.rect.y = 560
+
+    ball = Ball(WHITE, 10, 10)
+    ball.rect.x = 345
+    ball.rect.y = 240
+    ball.velocity = [3, 3]
+
+    for i in range(7):
+        brick = Brick(RED, 80, 30)
+        brick.rect.x = 100 * i + 60
+        brick.rect.y = 80
+        sprites_list.add(brick)
+        bricks_list.add(brick)
+
+    for i in range(7):
+        brick = Brick(ORANGE, 80, 30)
+        brick.rect.x = 100 * i + 60
+        brick.rect.y = 120
+        sprites_list.add(brick)
+        bricks_list.add(brick)
+
+    for i in range(7):
+        brick = Brick(YELLOW, 80, 30)
+        brick.rect.x = 100 * i + 60
+        brick.rect.y = 160
+        sprites_list.add(brick)
+        bricks_list.add(brick)
+
+    for i in range(7):
+        brick = Brick(GREEN, 80, 30)
+        brick.rect.x = 100 * i + 60
+        brick.rect.y = 200
+        sprites_list.add(brick)
+        bricks_list.add(brick)
+
+    sprites_list.add(ball)
+    sprites_list.add(paddle)
+
     game_clock = pygame.time.Clock()
+    game_loop = True
 
     while game_loop:
-
         for event in pygame.event.get():
-
-            # quit for main menu
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     pause = True
                     game_pause()
-
-            if event.type == QUIT:
+            
+            if event.type == pygame.QUIT:
+                game_loop = False
                 pygame.quit()
                 sys.exit()
 
-            #  keystroke events
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    player_1_move_up = True
-                if event.key == pygame.K_DOWN:
-                    player_1_move_down = True
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
-                    player_1_move_up = False
-                if event.key == pygame.K_DOWN:
-                    player_1_move_down = False
+        keys = pygame.key.get_pressed()
 
-        # checking the victory condition
-        if score < SCORE_MAX:
+        if keys[pygame.K_LEFT]:
+            paddle.move_left(5)
 
-            # clear screen
-            screen.fill(COLOR_BLACK)
+        if keys[pygame.K_RIGHT]:
+            paddle.move_right(5)
 
-            # ball collision with the wall
-            if rect_ball.y > 700:
-                ball_dy *= -1
-                bounce_sound_effect.play()
-            elif rect_ball.y <= 0:
-                ball_dy *= -1
-                bounce_sound_effect.play()
+        sprites_list.update()
 
-            # ball collision with the player 1 's paddle
-            if rect_ball.colliderect(rect_player_1) and ball_dx < 0:
-                ball_dx *= -1
-                if rect_player_1.bottom >= rect_ball.top > rect_player_1.centery + 30:
-                    if ball_dy == 0:
-                        ball_dy = 5
-                    else:
-                        ball_dy *= 1
+        if ball.rect.x <= 0 or ball.rect.x >= 790:
+            ball.velocity[0] *= -1
 
-                elif rect_player_1.top <= rect_ball.bottom < rect_player_1.centery - 30:
-                    if ball_dy == 0:
-                        ball_dy = 5
-                    else:
-                        ball_dy *= -1
-                    bounce_sound_effect.play()
-                elif rect_player_1.centery + 30 >= rect_ball.centery > rect_player_1.centery - 30:
-                    ball_dy = 0
+        if ball.rect.y < 65 or ball.rect.y > 590:
+            ball.velocity[1] *= -1
 
-            # # scoring points
-            # if rect_ball.x < -50:
-            #     rect_ball.x = 640
-            #     rect_ball.y = 360
-            #     ball_dy *= -1
-            #     ball_dx *= -1
-            #     score_2 += 1
-            #     scoring_sound_effect.play()
-            # elif rect_ball.x > 1320:
-            #     rect_ball.x = 640
-            #     rect_ball.y = 360
-            #     ball_dy *= -1
-            #     ball_dx *= -1
-            #     score_1 += 1
-            #     scoring_sound_effect.play()
+            if ball.rect.y > 590:
+                lives -= 1
 
-            # ball movement
-            rect_ball.x = rect_ball.x + ball_dx
-            rect_ball.y = rect_ball.y + ball_dy
+                if lives == 0:
+                    fonts = pygame.font.Font("assets/PressStart2P.ttf", 64)
+                    text = font.render("GAME OVER", 1, WHITE)
+                    screen.blit(text, (300, 300))
+                    pygame.display.flip()
+                    pygame.time.wait(3000)
 
-            # player 1 up movement
-            if player_1_move_up:
-                rect_player_1.y -= 5
-            else:
-                rect_player_1.y += 0
+                    game_loop = False
 
-            # player 1 down movement
-            if player_1_move_down:
-                rect_player_1.y += 5
-            else:
-                rect_player_1.y += 0
+        if pygame.sprite.collide_mask(ball, paddle):
+            ball.rect.x -= ball.velocity[0]
+            ball.rect.y -= ball.velocity[1]
+            ball.collision()
 
-            # player 1 collides with upper wall
-            if rect_player_1.y <= 0:
-                rect_player_1.y = 0
+        collision_list = pygame.sprite.spritecollide(ball, bricks_list, False)
 
-            # player 1 collides with lower wall
-            elif rect_player_1.y >= 570:
-                rect_player_1.y = 570
+        for brick in collision_list:
+            ball.collision()
+            brick.kill()
+            score += 1
 
-            # update score hud
-            score_text = score_font.render(str(score), True, COLOR_WHITE, COLOR_BLACK)
+            if len(bricks_list) == 0:
+                fonts = pygame.font.Font("assets/PressStart2P.ttf", 64)
+                text = font.render("LEVEL COMPLETED", 1, WHITE)
+                screen.blit(text, (250, 300))
+                pygame.display.flip()
+                pygame.time.wait(3000)
 
-            # drawing objects
-            screen.blit(ball, (rect_ball.x, rect_ball.y))
-            screen.blit(player_1, (rect_player_1.x, rect_player_1.y))
-            screen.blit(score_text, score_text_rect)
-        else:
-            # drawing victory
-            screen.fill(COLOR_BLACK)
-            screen.blit(score_text, score_text_rect)
-            screen.blit(victory_text, victory_text_rect)
+                game_loop = False
 
-        # update screen
-        pygame.display.update()
+        screen.fill(DARK_BLUE)
+        pygame.draw.line(screen, WHITE, (0, 58), (800, 58), 2)
+
+        font = pygame.font.Font("assets/PressStart2P.ttf", 24)
+        score_text = font.render("Score: %d" % score, 1, WHITE)
+        screen.blit(score_text, (20, 15))
+        lives_text = font.render("Lives: %d" % lives, 1, WHITE)
+        screen.blit(lives_text, (575, 15))
+
+        sprites_list.draw(screen)
+
+        pygame.display.flip()
+
         game_clock.tick(60)
-
 
 main_menu()
 pygame.display.update()
